@@ -21,21 +21,21 @@
             <p class="w-100">
               <a
                 href="javascript:void(0)"
-                class="btn btn-primary w-100"
+                class="btn btn-info w-100"
                 v-on:click="addSwitch(1)"
               >One gang</a>
             </p>
             <p class="w-100">
               <a
                 href="javascript:void(0)"
-                class="btn btn-primary w-100"
+                class="btn btn-info w-100"
                 v-on:click="addSwitch(2)"
               >Two gang</a>
             </p>
             <p class="w-100">
               <a
                 href="javascript:void(0)"
-                class="btn btn-primary w-100"
+                class="btn btn-info w-100"
                 v-on:click="addSwitch(3)"
               >Three gang</a>
             </p>
