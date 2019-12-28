@@ -3,6 +3,10 @@ import App from './App.vue'
 import store from './store'
 import 'bootstrap/dist/css/bootstrap.css';
 
+import VueCodemirror from 'vue-codemirror';
+import 'codemirror/lib/codemirror.css';
+Vue.use(VueCodemirror);
+
 Vue.config.productionTip = false
 
 new Vue({
