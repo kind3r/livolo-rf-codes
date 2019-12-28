@@ -1,6 +1,9 @@
 <template>
-  <div class="container border border-top-0">
-    <h2>Step 1 - Add switches</h2>
+  <div class="container border border-top-0 p-2">
+    <h2><span class="badge badge-info">1</span> Add switches</h2>
+    <div class="alert alert-primary">
+      Add as many switches as you need, for each gang of every switch a new remote id will be generated. This will allow asinging each gang a remote button and 2 scenes (one for on and one for off).
+    </div>
     <div class="row">
       <div class="col-lg-4" v-for="(sw,index) in switches" :key="switches[index].switchIndex">
         <LivoloSwitch
