@@ -6,9 +6,21 @@
     <div class="card-body">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon3">Name</span>
+          <span class="input-group-text" id="basic-addon3">Gang 1</span>
         </div>
-        <input type="text" class="form-control" aria-describedby="basic-addon3" v-model="name" @input="updateModel">
+        <input type="text" class="form-control" aria-describedby="basic-addon3" v-model="names[0]" @input="updateModel">
+      </div>
+      <div class="input-group mb-3" v-if="type >= 2">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">Gang 2</span>
+        </div>
+        <input type="text" class="form-control" aria-describedby="basic-addon3" v-model="names[1]" @input="updateModel">
+      </div>
+      <div class="input-group mb-3" v-if="type >= 3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">Gang 3</span>
+        </div>
+        <input type="text" class="form-control" aria-describedby="basic-addon3" v-model="names[2]" @input="updateModel">
       </div>
       <select class="form-control" v-model="type" @change="updateModel">
         <option value="1">One gang</option>
@@ -29,6 +41,7 @@ export default {
     return {
       switchIndex: this.value.switchIndex,
       name: this.value.name,
+      names: this.value.names,
       type: this.value.type
     }
   },
@@ -42,6 +55,7 @@ export default {
       this.$emit('input', {
         switchIndex: this.switchIndex,
         name: this.name,
+        names: this.names,
         type: parseInt(this.type),
       });
     },
