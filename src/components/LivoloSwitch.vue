@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card mb-2">
     <img src="../assets/livolo1.jpg" class="card-img-top" alt="One gang switch" v-if="type == 1">
     <img src="../assets/livolo2.jpg" class="card-img-top" alt="Two gang switch" v-if="type == 2">
     <img src="../assets/livolo3.jpg" class="card-img-top" alt="Three gang switch" v-if="type == 3">

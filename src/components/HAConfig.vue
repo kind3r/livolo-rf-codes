@@ -1,11 +1,38 @@
 <template>
   <div class="container border border-top-0 p-2">
     <h2><span class="badge badge-info">2</span> Home Assistant configuration</h2>
-    <div class="alert alert-primary">
-      test
+    <div class="alert alert-primary border border-primary">
+      <h5><span class="badge badge-pill badge-success">1</span> Setup Broadlink remote: 
+        <a href="https://www.home-assistant.io/integrations/broadlink/" target="_blank">https://www.home-assistant.io/integrations/broadlink/</a>
+      </h5>
+      <p>Store your Broadlink remote IP and MAC address in <code>secrets.yaml</code> file:</p>
+      <Prism language="yaml">{{secrets}}</Prism>
+      <p>Store remote configuration in a <a href="https://www.home-assistant.io/docs/configuration/packages/" target="_blank">package</a> 
+        or in your main <code>configuration.yaml</code> file:
+      </p>
+      <Prism language="yaml">{{remote}}</Prism>
     </div>
-    <p>Provide instructions on how to install HA config (secrets, packages etc.)</p>
-    <Prism language="yaml">{{script}}</Prism>
+    <div class="alert alert-primary border border-primary">
+      <h5><span class="badge badge-pill badge-success">2</span>
+        Add the configuration for the lights in a new <a href="https://www.home-assistant.io/docs/configuration/packages/" target="_blank">package</a> 
+        or in your main <code>configuration.yaml</code> file:
+      </h5>
+      <Prism language="yaml">{{script}}</Prism>
+    </div>
+    <div class="alert alert-primary">
+      <h5><span class="badge badge-pill badge-success">3</span>
+        Restart your HA server and check under <b>Configuration</b> &gt; <b>Scripts</b> that the following new scripts are present:
+      </h5>
+      <ul>
+        <li v-for="(s,i) in scripts" :key="i"><b>{{s}}</b></li>
+      </ul>
+    </div>
+    <div class="alert alert-primary">
+      <h5><span class="badge badge-pill badge-success">4</span>
+        <span class="badge badge-secondary">Optional</span> Add a simple <code>glance</code> card to the Lovelace UI to monitor the state of the lights: 
+      </h5>
+      <Prism language="yaml">{{lovelace}}</Prism>
+    </div>
   </div>
 </template>
 <script>
@@ -40,6 +67,25 @@ export default {
     };
   },
   computed: {
+    secrets() {
+      return `# Broadlink universal remote
+broadlink_ip: 192.168.x.x
+broadlink_mac: C8:F7:42:XX:XX:XX`;
+    },
+    remote() {
+      return `remote:
+  - platform: broadlink
+    host: !secret broadlink_ip
+    mac: !secret broadlink_mac
+    timeout: 30
+
+# switch is required to be able to use broadlink.send service
+switch:
+  - platform: broadlink
+    host: !secret broadlink_ip
+    mac: !secret broadlink_mac
+    timeout: 30`;
+    },
     script() {
       var lights = {};
       var script = {};
@@ -141,6 +187,32 @@ export default {
         script: script,
         input_boolean: input_boolean
       });
+    },
+    scripts() {
+      var scripts = [];
+      this.value.forEach(sw => {
+        for (var i = 0; i < sw.type; i++) {
+          scripts.push(sw.names[i] + " TOGGLE");
+          scripts.push(sw.names[i] + " ON");
+          scripts.push(sw.names[i] + " OFF");
+        }
+      });
+      return scripts;
+    },
+    lovelace() {
+      var card = {
+        type: 'glance',
+        entities: []
+      };
+      this.value.forEach(sw => {
+        for (var i = 0; i < sw.type; i++) {
+          card.entities.push({
+            entity: 'light.' + sw.names[i].toLowerCase().replace(/[^a-z0-9]/g, "_"),
+            name: sw.names[i]
+          });
+        }
+      });
+      return YAML.stringify(card);
     }
   }
 };
