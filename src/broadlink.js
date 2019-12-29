@@ -25,7 +25,7 @@ class Broadlink {
   }
 
   getButtonCode(button) {
-    const header = "b280260013";
+    const header = "b2c8260013";
     const id_bin = this.id.toString(2).padStart(16, '0');
     const btn_bin = button.toString(2).padStart(7, '0');
     var id_btn_bin = id_bin.concat(btn_bin);
