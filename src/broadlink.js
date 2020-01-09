@@ -68,6 +68,17 @@ Broadlink.buttons = {
   off: 106
 };
 
+/**
+ * When transformed in binary:
+ * - 4 button remotes have an even number of 1's
+ * - full remotes have an odd number of 1's
+ * 
+ * Dimmer-able remotes have special IDs
+ * Assumption:
+ * - between 16399 and 32767
+ * - start with 1x00 ?
+ * - have at least 5 1's ?
+ */
 Broadlink.idIsValid = function (id) {
   if(id) {
     const bin = id.toString(2);
@@ -80,3 +91,30 @@ Broadlink.idIsValid = function (id) {
 }
 
 export default Broadlink;
+
+/**
+Remote id's that work (*) or not with dimmer switches.
+
+7400   001110011101000 (7)
+12871  011001001000111 (7)
+16384  100000000000000 (1)
+16387  100000000000011 (3)
+16389  100000000000101 (3)
+16390  100000000000110 (3)
+16396  100000000001100 (3)
+16399  100000000001111 (5) *
+16408  100000000011000 (3) U
+16500  100000001110100 (5) *
+17084  100001010111100 (7) *
+18083  100011010100011 (7) *
+18285  100011101101101 (9) *
+18286  100011101101110 (9) *
+18288  100011101110000 (7) *
+26339  110011011100011 (9) *
+26560  110011111000000 (7) U
+26623  110011111111111 (13)U
+32764  111111111111100 (13)U
+32767  111111111111111 (15)U
+55555 1101100100000011 (7)
+
+*/

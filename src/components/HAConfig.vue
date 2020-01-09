@@ -106,6 +106,12 @@ switch:
       this.value.forEach(sw => {
         for (var i = 0; i < sw.type; i++) {
           const id = sw.names[i].toLowerCase().replace(/[^a-z0-9]/g, "_");
+          var togglePacket;
+          if(sw.dimmer == true) {
+            togglePacket = remote.getButtonCode(Broadlink.buttons.btn1, 127);
+          } else {
+            togglePacket = remote.getButtonCode(Broadlink.buttons.btn10, 127);
+          }
           lights[id] = {
             friendly_name: sw.names[i],
             value_template: "{{ is_state('input_boolean." + id + "', 'on') }}",
@@ -123,7 +129,7 @@ switch:
                 service: "broadlink.send",
                 data: {
                   host: new Secret("broadlink_ip"),
-                  packet: [remote.getButtonCode(Broadlink.buttons.btn10, 127)]
+                  packet: [togglePacket]
                 }
               },
               {

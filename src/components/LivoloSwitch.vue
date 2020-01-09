@@ -4,11 +4,19 @@
     <img src="../assets/livolo2.jpg" class="card-img-top" alt="Two gang switch" v-if="type == 2">
     <img src="../assets/livolo3.jpg" class="card-img-top" alt="Three gang switch" v-if="type == 3">
     <div class="card-body pt-0">
-      <select class="form-control mb-3" v-model="type" @change="updateModel">
-        <option value="1">One gang</option>
-        <option value="2">Two gang</option>
-        <option value="3">Three gang</option>
-      </select>
+      <div class="row mb-3 align-items-center">
+        <div class="col">
+          <select class="form-control" v-model="type" @change="updateModel">
+            <option value="1">One gang</option>
+            <option value="2">Two gang</option>
+            <option value="3">Three gang</option>
+          </select>
+        </div>
+        <div class="col text-right">
+          <input class="form-check-input" type="checkbox" :id="'dimmerCheck' + index" v-model="dimmer" @input="updateModel">
+          <label class="form-check-label" :for="'dimmerCheck' + index">Dimmer</label>
+        </div>
+      </div>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1">Gang 1</span>
@@ -41,7 +49,8 @@ export default {
       switchIndex: this.value.switchIndex,
       name: this.value.name,
       names: this.value.names,
-      type: this.value.type
+      type: this.value.type,
+      dimmer: this.value.dimmer || false
     }
   },
   computed: {
@@ -56,6 +65,7 @@ export default {
         name: this.name,
         names: this.names,
         type: parseInt(this.type),
+        dimmer: this.dimmer
       });
     },
     removeSwitch() {
