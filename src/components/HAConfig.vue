@@ -123,7 +123,7 @@ switch:
                 service: "broadlink.send",
                 data: {
                   host: new Secret("broadlink_ip"),
-                  packet: [remote.getButtonCode(Broadlink.buttons.btn1, 127)]
+                  packet: [remote.getButtonCode(Broadlink.buttons.btn10, 127)]
                 }
               },
               {
