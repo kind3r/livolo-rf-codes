@@ -24,8 +24,11 @@ class Broadlink {
     return startId;
   }
 
-  getButtonCode(button) {
-    const header = "b2c8260013";
+  getButtonCode(button, repeats = 200) {
+    if(repeats < 50 || repeats > 255) {
+      repeats = 200;
+    }
+    const header = "b2" + repeats.toString(16) + "260013";
     const id_bin = this.id.toString(2).padStart(16, '0');
     const btn_bin = button.toString(2).padStart(7, '0');
     var id_btn_bin = id_bin.concat(btn_bin);
