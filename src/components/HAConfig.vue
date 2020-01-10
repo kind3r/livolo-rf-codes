@@ -208,7 +208,7 @@ switch:
                 {
                   service: "broadlink.send",
                   data: {
-                    host: new Secret("broadlink_id"),
+                    host: new Secret("broadlink_ip"),
                     packet: [remote.getButtonCode(Broadlink.buttons.dimUp, 64)]
                   }
                 },
@@ -226,7 +226,7 @@ switch:
                 {
                   service: "broadlink.send",
                   data: {
-                    host: new Secret("broadlink_id"),
+                    host: new Secret("broadlink_ip"),
                     packet: [remote.getButtonCode(Broadlink.buttons.dimDown, 64)]
                   }
                 }
