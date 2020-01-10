@@ -9,7 +9,7 @@
       <li>Teach the gang the TOGGLE code</li>
       <li>Teach the gang the ON scene</li>
       <li>Teach the gang the OFF scene</li>
-      <li>Teach the gang the DIM LEARN code (only for dimmers)</li>
+      <li>Teach the gang the DIM LEARN code (only for dimmers, allows usage of DIM + and DIM - scripts)</li>
     </ul>
     <p>Below you will find an example for the first gang of the first switch you defined:</p>
     <div class="alert alert-primary border border-primary">

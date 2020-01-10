@@ -87,6 +87,19 @@ export default {
         localStorage.setItem("livolo-rf-codes.switchIndex", this.switchIndex);
       }
     },
+    loadFromStorage() {
+      // load switches from local storage
+      if (window.localStorage) {
+        const switches = localStorage.getItem("livolo-rf-codes.switches");
+        if (switches) {
+          this.switches = JSON.parse(switches);
+        }
+        const switchIndex = localStorage.getItem("livolo-rf-codes.switchIndex");
+        if (switchIndex) {
+          this.switchIndex = switchIndex;
+        }
+      }
+    }
   },
   watch: {
     switches(newVal) {
@@ -94,17 +107,7 @@ export default {
     }
   },
   mounted: function() {
-    // load switches from local storage
-    if (window.localStorage) {
-      const switches = localStorage.getItem("livolo-rf-codes.switches");
-      if (switches) {
-        this.switches = JSON.parse(switches);
-      }
-      const switchIndex = localStorage.getItem("livolo-rf-codes.switchIndex");
-      if (switchIndex) {
-        this.switchIndex = switchIndex;
-      }
-    }
+    this.loadFromStorage();
   }
 }
 </script>

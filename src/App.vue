@@ -22,7 +22,7 @@
       <Switches v-model="switches" v-if="step==1"></Switches>
       <HAConfig v-model="switches" v-show="step==2"></HAConfig>
       <Pairing v-model="switches" v-if="step==3"></Pairing>
-      <Advanced v-if="step==4"></Advanced>
+      <Advanced v-if="step==4" v-on:reloadStorage="reloadStorage"></Advanced>
     </div>
     <footer class="container-fluid mt-3 mb-5 row">
       <div class="col">
@@ -61,6 +61,9 @@ export default {
   methods: {
     switchStep(step) {
       this.step = step;
+    },
+    reloadStorage() {
+      this.step = 1;
     }
   }
 };
