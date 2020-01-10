@@ -87,6 +87,7 @@ switch:
     timeout: 30`;
     },
     script() {
+      var lightEntities = [];
       var lights = {};
       var script = {};
       var input_boolean = {};
@@ -128,6 +129,7 @@ switch:
               service: "script." + id + "_off"
             }
           };
+          lightEntities.push("light." + id);
           script[id + "_toggle"] = {
             alias: sw.names[i] + " TOGGLE",
             sequence: [
@@ -245,6 +247,11 @@ switch:
           {
             platform: "template",
             lights: lights
+          },
+          {
+            platform: "group",
+            name: "All Livolo lights",
+            entities: lightEntities
           }
         ],
         script: script,
