@@ -3,22 +3,24 @@ class Broadlink {
     this.id = id || this.generateId();
   }
 
-  incrementId() {
-    this.id = this.generateNextId(this.id);
+  incrementId(dimmer = false) {
+    this.id = this.generateNextId(this.id, dimmer);
   }
 
   generateId() {
-    // 1 - 65500
-    var id = Math.round(Math.random() * 35499);
+    // valid ID: 1 - 65500
+    // valid ID for dimmers : 16384 - 32767
+    // generate a remote ID between 16384 and 30000
+    var id = Math.round(Math.random() * 13616) + 16384;
     while (!Broadlink.idIsValid(id)) {
       id++;
     }
     return id;
   }
 
-  generateNextId(startId) {
+  generateNextId(startId, dimmer) {
     startId++;
-    while (!Broadlink.idIsValid(startId)) {
+    while (!Broadlink.idIsValid(startId, dimmer)) {
       startId++;
     }
     return startId;
@@ -65,7 +67,10 @@ Broadlink.buttons = {
   scn2: 114,
   scn3: 10,
   scn4: 18,
-  off: 106
+  off: 106,
+  dimToggle: 8,
+  dimUp: 16,
+  dimDown: 56
 };
 
 /**
@@ -78,12 +83,21 @@ Broadlink.buttons = {
  * - between 16399 and 32767
  * - have at least 5 1's
  */
-Broadlink.idIsValid = function (id) {
+Broadlink.idIsValid = function (id, dimmer = false) {
   if(id) {
     const bin = id.toString(2);
-    // console.log(bin, id);
+    if(id < 16399 || id > 32767) {
+      return false;
+    }
     const totalone = bin.match(/1/g).length;
-    return totalone % 2 == 1;
+    if(totalone < 5) {
+      return false;
+    }
+    if(dimmer) {
+      return totalone % 2 == 0;
+    } else {
+      return totalone % 2 == 1;
+    }
   } else {
     return false;
   }
@@ -114,6 +128,7 @@ ID     Binary             Working
 26560  110011111000000 (7) *
 26623  110011111111111 (13)*
 32764  111111111111100 (13)*
+32765  111111111111101 (14)DIMMER
 32767  111111111111111 (15)*
 55555 1101100100000011 (7)
 

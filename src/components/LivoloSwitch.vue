@@ -13,7 +13,7 @@
           </select>
         </div>
         <div class="col text-right">
-          <input class="form-check-input" type="checkbox" :id="'dimmerCheck' + index" v-model="dimmer" @input="updateModel">
+          <input class="form-check-input" type="checkbox" :id="'dimmerCheck' + index" v-model="dimmer" @change="updateModel">
           <label class="form-check-label" :for="'dimmerCheck' + index">Dimmer</label>
         </div>
       </div>
