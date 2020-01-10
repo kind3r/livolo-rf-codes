@@ -119,12 +119,12 @@ export default {
               return false;
             }
           } catch (error) {
-            console.log('Error parsing config', error);
+            // console.log('Error parsing config', error);
             this.configUploadError = "Error parsing configuration file";
             return false;
           }
         } catch (error) {
-          console.log('Error loading config', error);
+          // console.log('Error loading config', error);
           this.configUploadError = "Error loading configuration file";
           return false;
         }
