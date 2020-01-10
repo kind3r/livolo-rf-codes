@@ -9,6 +9,7 @@
       <li>Teach the gang the TOGGLE code</li>
       <li>Teach the gang the ON scene</li>
       <li>Teach the gang the OFF scene</li>
+      <li>Teach the gang the DIM LEARN code (only for dimmers)</li>
     </ul>
     <p>Below you will find an example for the first gang of the first switch you defined:</p>
     <div class="alert alert-primary border border-primary">
@@ -92,6 +93,35 @@
             </li>
           </ul>
         </dd>
+        <template v-if="value[0].dimmer">
+          <dt>
+            <span class="badge badge-pill badge-success">4</span> Teach the gang
+            <code>{{value[0].names[0]}}</code> the DIM LEARN code
+          </dt>
+          <dd>
+          <ul>
+            <li>
+              Press and hold the gang until you hear a
+              <mark>beep</mark> (about 5 seconds).
+            </li>
+            <li>
+              Run the script named
+              <code>{{value[0].names[0]}} DIM LEARN</code>.
+              You should hear another
+              <mark>beep</mark> signifying that the switch learned the new remote code.
+              <br />
+            </li>
+            <li>
+              <span class="badge badge-secondary">Optional</span> Run the script named
+              <code>{{value[0].names[0]}} DIM LEARN</code> to check if the switch turns on and off.
+            </li>
+            <li>
+              <span class="badge badge-secondary">Optional</span> Run the scripts named
+              <code>{{value[0].names[0]}} DIM +</code> and <code>{{value[0].names[0]}} DIM -</code> to check if the switch dims up or down.
+            </li>
+          </ul>
+        </dd>
+        </template>
       </dl>
     </div>
     <!-- </div> -->

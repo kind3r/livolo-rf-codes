@@ -3,22 +3,24 @@ class Broadlink {
     this.id = id || this.generateId();
   }
 
-  incrementId() {
-    this.id = this.generateNextId(this.id);
+  incrementId(dimmer = false) {
+    this.id = this.generateNextId(this.id, dimmer);
   }
 
   generateId() {
-    // 1 - 65500
-    var id = Math.round(Math.random() * 35499);
+    // valid ID: 1 - 65500
+    // valid ID for dimmers : 16384 - 32767
+    // generate a remote ID between 16384 and 30000
+    var id = Math.round(Math.random() * 13616) + 16384;
     while (!Broadlink.idIsValid(id)) {
       id++;
     }
     return id;
   }
 
-  generateNextId(startId) {
+  generateNextId(startId, dimmer) {
     startId++;
-    while (!Broadlink.idIsValid(startId)) {
+    while (!Broadlink.idIsValid(startId, dimmer)) {
       startId++;
     }
     return startId;
@@ -65,18 +67,69 @@ Broadlink.buttons = {
   scn2: 114,
   scn3: 10,
   scn4: 18,
-  off: 106
+  off: 106,
+  dimToggle: 8,
+  dimUp: 16,
+  dimDown: 56
 };
 
-Broadlink.idIsValid = function (id) {
+/**
+ * When transformed in binary:
+ * - 4 button remotes have an even number of 1's
+ * - full remotes have an odd number of 1's
+ * 
+ * Dimmer-able remotes have special IDs
+ * Assumption:
+ * - between 16399 and 32767
+ * - have at least 5 1's
+ */
+Broadlink.idIsValid = function (id, dimmer = false) {
   if(id) {
     const bin = id.toString(2);
-    // console.log(bin, id);
+    if(id < 16399 || id > 32767) {
+      return false;
+    }
     const totalone = bin.match(/1/g).length;
-    return totalone % 2 == 1;
+    if(totalone < 5) {
+      return false;
+    }
+    if(dimmer) {
+      return totalone % 2 == 0;
+    } else {
+      return totalone % 2 == 1;
+    }
   } else {
     return false;
   }
 }
 
 export default Broadlink;
+
+/**
+Remote id's that work (*) or not with dimmer switches.
+
+ID     Binary             Working
+7400   001110011101000 (7)
+12871  011001001000111 (7)
+16384  100000000000000 (1)
+16387  100000000000011 (3)
+16389  100000000000101 (3)
+16390  100000000000110 (3)
+16396  100000000001100 (3)
+16399  100000000001111 (5) *
+16408  100000000011000 (3) 
+16500  100000001110100 (5) *
+17084  100001010111100 (7) *
+18083  100011010100011 (7) *
+18285  100011101101101 (9) *
+18286  100011101101110 (9) *
+18288  100011101110000 (7) *
+26339  110011011100011 (9) *
+26560  110011111000000 (7) *
+26623  110011111111111 (13)*
+32764  111111111111100 (13)*
+32765  111111111111101 (14)DIMMER
+32767  111111111111111 (15)*
+55555 1101100100000011 (7)
+
+*/

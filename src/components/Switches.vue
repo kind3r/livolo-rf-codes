@@ -69,7 +69,8 @@ export default {
           "Switch " + this.switchIndex + " gang 2",
           "Switch " + this.switchIndex + " gang 3"
         ],
-        type: type
+        type: type,
+        dimmer: false
       });
       this.storeSwitches();
     },

@@ -94,6 +94,12 @@ switch:
       var remote;
       if (window.localStorage) {
         remoteId = parseInt(localStorage.getItem("livolo-rf-codes.remoteId"));
+        // patch to update the remote id in case an invalid one is stored
+        if(!Broadlink.idIsValid(remoteId)) {
+          var tempRemote = new Broadlink();
+          remoteId = tempRemote.id;
+          localStorage.setItem("livolo-rf-codes.remoteId", remoteId);
+        }
       }
       if (remoteId) {
         remote = new Broadlink(remoteId);
@@ -106,6 +112,12 @@ switch:
       this.value.forEach(sw => {
         for (var i = 0; i < sw.type; i++) {
           const id = sw.names[i].toLowerCase().replace(/[^a-z0-9]/g, "_");
+          var togglePacket;
+          if(sw.dimmer == true) {
+            togglePacket = remote.getButtonCode(Broadlink.buttons.btn1, 128);
+          } else {
+            togglePacket = remote.getButtonCode(Broadlink.buttons.btn10, 128);
+          }
           lights[id] = {
             friendly_name: sw.names[i],
             value_template: "{{ is_state('input_boolean." + id + "', 'on') }}",
@@ -123,7 +135,7 @@ switch:
                 service: "broadlink.send",
                 data: {
                   host: new Secret("broadlink_ip"),
-                  packet: [remote.getButtonCode(Broadlink.buttons.btn10, 127)]
+                  packet: [togglePacket]
                 }
               },
               {
@@ -170,6 +182,57 @@ switch:
               }
             ]
           };
+          if(sw.dimmer) {
+            remote.incrementId(true);
+            script[id + "_dim_toggle"] = {
+              alias: sw.names[i] + " DIM LEARN",
+              sequence: [
+                {
+                  service: "broadlink.send",
+                  data: {
+                    host: new Secret("broadlink_ip"),
+                    packet: [remote.getButtonCode(Broadlink.buttons.dimToggle, 128)]
+                  }
+                },
+                {
+                  service: "input_boolean.toggle",
+                  data: {
+                    entity_id: "input_boolean." + id
+                  }
+                }
+              ]
+            };
+            script[id + "_dim_up"] = {
+              alias: sw.names[i] + " DIM +",
+              sequence: [
+                {
+                  service: "broadlink.send",
+                  data: {
+                    host: new Secret("broadlink_ip"),
+                    packet: [remote.getButtonCode(Broadlink.buttons.dimUp, 64)]
+                  }
+                },
+                {
+                  service: "input_boolean.turn_on",
+                  data: {
+                    entity_id: "input_boolean." + id
+                  }
+                }
+              ]
+            };
+            script[id + "_dim_down"] = {
+              alias: sw.names[i] + " DIM -",
+              sequence: [
+                {
+                  service: "broadlink.send",
+                  data: {
+                    host: new Secret("broadlink_ip"),
+                    packet: [remote.getButtonCode(Broadlink.buttons.dimDown, 64)]
+                  }
+                }
+              ]
+            }
+          }
           input_boolean[id] = {
             name: sw.names[i],
             icon: "mdi:light-switch"
