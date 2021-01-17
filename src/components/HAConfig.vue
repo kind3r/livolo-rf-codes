@@ -5,12 +5,12 @@
       <h5><span class="badge badge-pill badge-success">1</span> Setup Broadlink remote: 
         <a href="https://www.home-assistant.io/integrations/broadlink/" target="_blank">https://www.home-assistant.io/integrations/broadlink/</a>
       </h5>
-      <p>Store your Broadlink remote IP and MAC address in <code>secrets.yaml</code> file:</p>
+      <!-- <p>Store your Broadlink remote IP and MAC address in <code>secrets.yaml</code> file:</p>
       <Prism language="yaml">{{secrets}}</Prism>
       <p>Store remote configuration in a <a href="https://www.home-assistant.io/docs/configuration/packages/" target="_blank">package</a> 
         or in your main <code>configuration.yaml</code> file:
       </p>
-      <Prism language="yaml">{{remote}}</Prism>
+      <Prism language="yaml">{{remote}}</Prism> -->
     </div>
     <div class="alert alert-primary border border-primary">
       <h5><span class="badge badge-pill badge-success">2</span>
@@ -134,10 +134,10 @@ switch:
             alias: sw.names[i] + " TOGGLE",
             sequence: [
               {
-                service: "broadlink.send",
+                service: "remote.send_command",
                 data: {
-                  host: new Secret("broadlink_ip"),
-                  packet: [togglePacket]
+                  entity_id: "remote.broadlink_remote",
+                  command: "b64:" + togglePacket
                 }
               },
               {
@@ -152,9 +152,9 @@ switch:
             alias: sw.names[i] + " ON",
             sequence: [
               {
-                service: "broadlink.send",
+                service: "remote.send_command",
                 data: {
-                  host: new Secret("broadlink_ip"),
+                  entity_id: "remote.broadlink_remote",
                   packet: [remote.getButtonCode(Broadlink.buttons.scn1)]
                 }
               },
@@ -170,9 +170,9 @@ switch:
             alias: sw.names[i] + " OFF",
             sequence: [
               {
-                service: "broadlink.send",
+                service: "remote.send_command",
                 data: {
-                  host: new Secret("broadlink_ip"),
+                  entity_id: "remote.broadlink_remote",
                   packet: [remote.getButtonCode(Broadlink.buttons.scn2)]
                 }
               },
@@ -190,9 +190,9 @@ switch:
               alias: sw.names[i] + " DIM LEARN",
               sequence: [
                 {
-                  service: "broadlink.send",
+                  service: "remote.send_command",
                   data: {
-                    host: new Secret("broadlink_ip"),
+                    entity_id: "remote.broadlink_remote",
                     packet: [remote.getButtonCode(Broadlink.buttons.dimToggle, 128)]
                   }
                 },
@@ -208,9 +208,9 @@ switch:
               alias: sw.names[i] + " DIM +",
               sequence: [
                 {
-                  service: "broadlink.send",
+                  service: "remote.send_command",
                   data: {
-                    host: new Secret("broadlink_ip"),
+                    entity_id: "remote.broadlink_remote",
                     packet: [remote.getButtonCode(Broadlink.buttons.dimUp, 64)]
                   }
                 },
@@ -226,9 +226,9 @@ switch:
               alias: sw.names[i] + " DIM -",
               sequence: [
                 {
-                  service: "broadlink.send",
+                  service: "remote.send_command",
                   data: {
-                    host: new Secret("broadlink_ip"),
+                    entity_id: "remote.broadlink_remote",
                     packet: [remote.getButtonCode(Broadlink.buttons.dimDown, 64)]
                   }
                 }
