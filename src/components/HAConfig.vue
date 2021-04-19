@@ -135,8 +135,10 @@ switch:
             sequence: [
               {
                 service: "remote.send_command",
-                data: {
+                target: {
                   entity_id: "remote.broadlink_remote",
+                },
+                data: {
                   command: "b64:" + togglePacket
                 }
               },
@@ -153,9 +155,11 @@ switch:
             sequence: [
               {
                 service: "remote.send_command",
-                data: {
+                target: {
                   entity_id: "remote.broadlink_remote",
-                  packet: [remote.getButtonCode(Broadlink.buttons.scn1)]
+                },
+                data: {
+                  command: "b64:" + remote.getButtonCode(Broadlink.buttons.scn1)
                 }
               },
               {
@@ -171,9 +175,11 @@ switch:
             sequence: [
               {
                 service: "remote.send_command",
-                data: {
+                target: {
                   entity_id: "remote.broadlink_remote",
-                  packet: [remote.getButtonCode(Broadlink.buttons.scn2)]
+                },
+                data: {
+                  command: "b64:" + remote.getButtonCode(Broadlink.buttons.scn2)
                 }
               },
               {
@@ -191,9 +197,11 @@ switch:
               sequence: [
                 {
                   service: "remote.send_command",
-                  data: {
+                  target: {
                     entity_id: "remote.broadlink_remote",
-                    packet: [remote.getButtonCode(Broadlink.buttons.dimToggle, 128)]
+                  },
+                  data: {
+                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimToggle, 128)
                   }
                 },
                 {
@@ -209,9 +217,11 @@ switch:
               sequence: [
                 {
                   service: "remote.send_command",
-                  data: {
+                  target: {
                     entity_id: "remote.broadlink_remote",
-                    packet: [remote.getButtonCode(Broadlink.buttons.dimUp, 64)]
+                  },
+                  data: {
+                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimUp, 64)
                   }
                 },
                 {
@@ -227,9 +237,11 @@ switch:
               sequence: [
                 {
                   service: "remote.send_command",
-                  data: {
+                  target: {
                     entity_id: "remote.broadlink_remote",
-                    packet: [remote.getButtonCode(Broadlink.buttons.dimDown, 64)]
+                  },
+                  data: {
+                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimDown, 64)
                   }
                 }
               ]
