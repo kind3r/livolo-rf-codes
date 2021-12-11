@@ -26,7 +26,16 @@ class Broadlink {
     return startId;
   }
 
-  getButtonCode(button, repeats = 200) {
+  getButtonCode(button, remoteModel, repeats = 200) {
+    if (remoteModel == "rmpro")
+      return this.getButtonCodeRmPro(button, repeats);
+    else if (remoteModel == "rm4pro")
+      return this.getButtonCodeRm4Pro(button, repeats);
+    else
+      throw "code generation for remote model " + remoteModel + " not supported!";
+  }
+
+  getButtonCodeRmPro(button, repeats = 200) {
     if(repeats < 50 || repeats > 255) {
       repeats = 200;
     }
