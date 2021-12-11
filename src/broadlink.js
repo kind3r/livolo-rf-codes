@@ -42,7 +42,7 @@ class Broadlink {
     const header = "b2" + repeats.toString(16) + "260013";
     const id_bin = this.id.toString(2).padStart(16, '0');
     const btn_bin = button.toString(2).padStart(7, '0');
-    var id_btn_bin = id_bin.concat(btn_bin);    
+    var id_btn_bin = id_bin.concat(btn_bin);
 
     id_btn_bin = id_btn_bin.replace(/0/g, "0606");
     id_btn_bin = id_btn_bin.replace(/1/g, "0c");
@@ -74,15 +74,12 @@ class Broadlink {
     return this.hexToBase64(hex_out);
   }
 
-
   hexToBase64(hexstring) {
     return btoa(hexstring.match(/\w{2}/g).map(function (a) {
       return String.fromCharCode(parseInt(a, 16));
     }).join(""));
   }
 }
-
-
 
 Broadlink.buttons = {
   btn1: 0,
