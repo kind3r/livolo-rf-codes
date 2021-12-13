@@ -61,7 +61,7 @@ const secret = {
 YAML.defaultOptions.customTags = [secret];
 
 export default {
-  props: ["value"],
+  props: ["value", "options"],
   data: function() {
     return {
     };
@@ -115,9 +115,9 @@ switch:
           const id = sw.names[i].toLowerCase().replace(/[^a-z0-9]/g, "_");
           var togglePacket;
           if(sw.dimmer == true) {
-            togglePacket = remote.getButtonCode(Broadlink.buttons.btn1, 128);
+            togglePacket = remote.getButtonCode(Broadlink.buttons.btn1, this.options.remote_model, 128);
           } else {
-            togglePacket = remote.getButtonCode(Broadlink.buttons.btn10, 128);
+            togglePacket = remote.getButtonCode(Broadlink.buttons.btn10, this.options.remote_model, 128);
           }
           lights[id] = {
             friendly_name: sw.names[i],
@@ -136,7 +136,7 @@ switch:
               {
                 service: "remote.send_command",
                 target: {
-                  entity_id: "remote.broadlink_remote",
+                  entity_id: this.options.entity_id,
                 },
                 data: {
                   command: "b64:" + togglePacket
@@ -156,10 +156,10 @@ switch:
               {
                 service: "remote.send_command",
                 target: {
-                  entity_id: "remote.broadlink_remote",
+                  entity_id: this.options.entity_id,
                 },
                 data: {
-                  command: "b64:" + remote.getButtonCode(Broadlink.buttons.scn1)
+                  command: "b64:" + remote.getButtonCode(Broadlink.buttons.scn1, this.options.remote_model)
                 }
               },
               {
@@ -176,10 +176,10 @@ switch:
               {
                 service: "remote.send_command",
                 target: {
-                  entity_id: "remote.broadlink_remote",
+                  entity_id: this.options.entity_id,
                 },
                 data: {
-                  command: "b64:" + remote.getButtonCode(Broadlink.buttons.scn2)
+                  command: "b64:" + remote.getButtonCode(Broadlink.buttons.scn2, this.options.remote_model)
                 }
               },
               {
@@ -198,10 +198,10 @@ switch:
                 {
                   service: "remote.send_command",
                   target: {
-                    entity_id: "remote.broadlink_remote",
+                    entity_id: this.options.entity_id,
                   },
                   data: {
-                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimToggle, 128)
+                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimToggle, this.options.remote_model, 128)
                   }
                 },
                 {
@@ -218,10 +218,10 @@ switch:
                 {
                   service: "remote.send_command",
                   target: {
-                    entity_id: "remote.broadlink_remote",
+                    entity_id: this.options.entity_id,
                   },
                   data: {
-                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimUp, 64)
+                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimUp, this.options.remote_model, 64)
                   }
                 },
                 {
@@ -238,10 +238,10 @@ switch:
                 {
                   service: "remote.send_command",
                   target: {
-                    entity_id: "remote.broadlink_remote",
+                    entity_id: this.options.entity_id,
                   },
                   data: {
-                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimDown, 64)
+                    command: "b64:" + remote.getButtonCode(Broadlink.buttons.dimDown, this.options.remote_model, 64)
                   }
                 }
               ]

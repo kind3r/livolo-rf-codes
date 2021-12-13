@@ -26,7 +26,16 @@ class Broadlink {
     return startId;
   }
 
-  getButtonCode(button, repeats = 200) {
+  getButtonCode(button, remoteModel, repeats = 200) {
+    if (remoteModel == "rmpro")
+      return this.getButtonCodeRmPro(button, repeats);
+    else if (remoteModel == "rm4pro")
+      return this.getButtonCodeRm4Pro(button, repeats);
+    else
+      throw "code generation for remote model " + remoteModel + " not supported!";
+  }
+
+  getButtonCodeRmPro(button, repeats = 200) {
     if(repeats < 50 || repeats > 255) {
       repeats = 200;
     }
@@ -39,6 +48,26 @@ class Broadlink {
     id_btn_bin = id_btn_bin.replace(/1/g, "0c");
 
     var hex_out = header + id_btn_bin;
+    const pad_len = 32 - (hex_out.length - 24) % 32;
+
+    hex_out = hex_out + ('').padStart(pad_len, '0');
+    return this.hexToBase64(hex_out);
+  }
+
+  getButtonCodeRm4Pro(button, repeats = 200) {
+    if(repeats < 50 || repeats > 255) {
+      repeats = 200;
+    }
+    const header = "b2" + repeats.toString(16) + "b004009f06002004"; // header for rm4pro
+    const id_bin = this.id.toString(2).padStart(16, '0');
+    const btn_bin = button.toString(2).padStart(7, '0');
+    var id_btn_bin = id_bin.concat(btn_bin);
+
+    id_btn_bin = id_btn_bin.replace(/0/g, "0606");
+    id_btn_bin = id_btn_bin.replace(/1/g, "0c");
+    id_btn_bin = "13" + id_btn_bin;
+
+    var hex_out = header + id_btn_bin.repeat(15);
     const pad_len = 32 - (hex_out.length - 24) % 32;
 
     hex_out = hex_out + ('').padStart(pad_len, '0');
